@@ -62,9 +62,13 @@ module.exports.registerUser = async (req, res) => {
 // login user
 module.exports.loginUser = async (req, res) => {
   try {
-    const isUser = checkExists(req, User);
+    const isUser = await checkExists(req, User);
+    console.log(isUser);
     if (isUser.length > 0) {
-      const userValidation = bcrypt.compare(req.body.email, isUser[0].password);
+      const userValidation = bcrypt.compare(
+        req.body.password,
+        isUser[0].password
+      );
       if (userValidation) {
         const jwtToken = jwt.sign(
           {
